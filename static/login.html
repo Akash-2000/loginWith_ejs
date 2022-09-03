@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Login</title>
+</head>
+<style>
+   .bg {
+  /* The image used */
+  /* Full height */
+  height: 100%; 
+  /* Center and scale the image nicely */
+  background: url(https://images.pexels.com/photos/1261728/pexels-photo-1261728.jpeg);
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+#emailHelp{
+    color:black;
+}
+</style>
+
+<body>
+    <div class="container-fluid d-flex align-items-center justify-content-center vh-100 bg">
+    <form id="login" action="/api/login">
+        <h1 class>Login</h1>
+        <div class="form-group">
+        <label  class="form-label" for="username">Username</label>
+        <input type="text" class="form-control" id="username" autocomplete="off" placeholder="username" />
+        <small id="emailHelp" class="form-text">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+        <label class="form-label"  for="password">Password</label>
+        <input type="password" class="form-control" autocomplete="off" id="password" placeholder="password" />
+        </div>
+        <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+    </form>
+    </div>
+
+    <script>
+        const form = document.getElementById("login")
+        form.addEventListener("submit", registerUser)
+
+        async function registerUser(event) {
+            //to remain at default state after pressing submit below is used
+            event.preventDefault()
+            //getting username and password
+            const username = document.getElementById("username").value
+            const password = document.getElementById("password").value
+
+            // send data to backend
+            //send data as Json(very common)
+            const result = await fetch("/api/login", {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    username,
+                    password
+                })
+            }).then((res) => res.json())
+            if (result.status == "ok") {
+                //everything ok
+                console.log("Got the token: ",result.data)
+                localStorage.setItem("token",result.data)
+                alert("sucess")
+            } else {
+                alert(result.status+' '+result.data +' try again!')
+            }
+        }
+    </script>
+</body>
+
+</html>
