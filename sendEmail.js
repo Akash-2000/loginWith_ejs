@@ -11,7 +11,7 @@ const sendEmail = async (email, subject, text) => {
                 pass:'e493bddeb22712',
             }
         });
-
+ 
         await transporter.sendMail({
             from:"akashpoovan983@gmail.com",
             to: email,
